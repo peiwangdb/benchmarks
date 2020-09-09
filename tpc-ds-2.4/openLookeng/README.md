@@ -1,7 +1,7 @@
-Scripts for running TPC-DS on Presto
+Scripts for running TPC-DS on OpenLookeng
 ====================================
 
-This directory contains the scripts we use for producing TPC-DS results on Presto, using EMR.
+This directory contains the scripts we use for producing TPC-DS results on OpenLookeng.
 The scripts are a bit rough, use with caution!
 
 Includes:
@@ -14,9 +14,5 @@ Includes:
 
 Usage
 -----
-
-1. To create an EMR cluster, and then set up TPCDS schema in Hive catalog, refer to the scripts from `../emr-spark`.
-2. Upload the script and queries folder to the cluster.
-3. At the top of the script, there are several hardcoded global variables that may need to be modified, they are documented inline.
 
 Results of a run will be saved in `results/timestamp=NNN`.
