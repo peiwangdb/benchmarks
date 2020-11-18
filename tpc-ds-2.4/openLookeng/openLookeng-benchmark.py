@@ -122,13 +122,13 @@ def run_openlookeng_benchmark(query_dir, results_dir, num_runs):
                         "cat %s/%s >> __tmp_get_query_plan.sql >> __tmp_get_query_plan.sql" %
                         (query_dir, filename))
 
-            explain_cmd = "{} --server {}:{} --catalog {} --schema {} --file __tmp_get_query_plan.sql > {}/plans/{}.plan"
+            explain_cmd = "java -jar {} --server {}:{} --catalog {} --schema {} --file __tmp_get_query_plan.sql > {}/plans/{}.plan"
             run_command(explain_cmd.format(cli, server, port, catalog, databaseName, results_dir, filename))
             # Run the query
             print("Running " + filename)
             run_command("""cat __tmp_openlookeng_configs.sql %s/%s > __tmp_current_query.sql""" %
                         (query_dir, filename))
-            run_command("%s --server %s:%s --catalog %s --schema %s --file __tmp_current_query.sql"
+            run_command("java -jar %s --server %s:%s --catalog %s --schema %s --file __tmp_current_query.sql"
                         "> %s/runs/%s.run 2>&1" % (cli, server, port, catalog, databaseName, results_dir, filename))
             # Get query runtime
             output = run_command_with_output("%s --server %s:%s --catalog %s --schema %s --file "
