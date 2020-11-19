@@ -39,7 +39,7 @@ databaseName = "sf%s" % (scaleFactor)
 # Timeout of a query
 timeout = '15m'
 # Number of runs.
-num_runs = 1
+num_runs = 3
 # Location of the folder that contains files with queries we will run
 query_dir = "tpcds_2_4_presto"
 # Directory to save results.
@@ -94,8 +94,16 @@ def create_query_result(filename, response):
     stats.append(query_stats["queuedTime"])
     stats.append(query_stats["totalPlanningTime"])
     stats.append(str(query_stats["completedDrivers"]))
-    stats.append(str(query_stats["physicalInputPositions"]/1000000))
+    
+    physicalInputPositions = query_stats["physicalInputPositions"]
+    processedInputPositions = query_stats["processedInputPositions"]
+    filterRatio = 1 - round(processedInputPositions/physicalInputPositions, 4)
+    
+    stats.append(str(physicalInputPositions/1000000))
     stats.append(query_stats["physicalInputDataSize"])
+    stats.append(str(processedInputPositions/1000000))
+    stats.append(query_stats["processedInputDataSize"])
+    stats.append(str(filterRatio))
 
     return ",".join(stats)
 
@@ -205,7 +213,7 @@ if __name__ == '__main__':
     run_command("mkdir -p %s/plans" % (results_dir), True)
     with open("%s/openlookeng_results.csv" % (results_dir), "w") as results:
         results.write(
-            'query,state,elapsedTime (s),queuedTime,totalPlanningTime,completedDrivers,physicalInputPositions,physicalInputDataSize (M)\n')
+            'query,state,elapsedTime (s),queuedTime,totalPlanningTime,completedDrivers,physicalInputPositions,physicalInputDataSize,inputPositions,inputDataSize,filtered (M)\n')
 
     run_openlookeng_benchmark(query_dir, results_dir, num_runs)
     # convert_raw_results("%s/openlookeng_runtimes_raw.csv" % (results_dir))
