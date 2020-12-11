@@ -139,7 +139,7 @@ def run_openlookeng_benchmark(query_dir, results_dir, num_runs):
             run_command("java -jar %s --server %s:%s --catalog %s --schema %s --file __tmp_current_query.sql"
                         "> %s/runs/%s.run 2>&1" % (cli, server, port, catalog, databaseName, results_dir, filename))
             # Get query runtime
-            output = run_command_with_output("%s --server %s:%s --catalog %s --schema %s --file "
+            output = run_command_with_output("java -jar %s --server %s:%s --catalog %s --schema %s --file "
                         "__tmp_get_runtime_from_openlookeng.sql" %
                         (cli, server, port, catalog, databaseName))
             query_id = get_query_id(output)

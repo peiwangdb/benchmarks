@@ -1,7 +1,7 @@
 ---q84-v2.4---
 
  select c_customer_id as customer_id
-       ,concat(coalesce(c_last_name,''), ', ', coalesce(c_first_name,'')) as customername
+       ,concat(concat(coalesce(c_last_name,''), ', '), coalesce(c_first_name,'')) as customername
  from customer
      ,customer_address
      ,customer_demographics
